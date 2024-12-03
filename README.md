@@ -57,3 +57,54 @@ nest generate service posts
   - `PUT /posts/:id`: Update a post by ID.
   - `DELETE /posts/:id`: Delete a post by ID.
 - Test all routes using Postman.
+
+## Bonus Objective: Add User Authentication
+### Step 1: Create the User Module
+- Generate the users module:
+```
+nest generate module users
+```
+- Generate the users controller:
+```
+nest generate controller users
+```
+- Generate the users service:
+```
+nest generate service users
+```
+### Step 2: Define the User Schema
+- Create a `user.schema.ts` file inside the users folder.
+- Define a schema with:
+  - username (string, unique, required).
+  - password (string, required).
+- Integrate the schema with Mongoose.
+
+### Step 3: Implement the Registration Route
+- In `users.controller.ts`, create a `POST /users` route to register a new user.
+- Use bcrypt to hash the password before saving.
+- Save the user in the database using the service.
+- Test the route in Postman.
+
+### Step 4: Implement the Login Route
+- In `users.controller.ts`, create a `POST /users/login` route to log in a user.
+  - Verify the password using `bcrypt.compare()`.
+  - Generate a JWT token with the user ID in the payload using `@nestjs/jwt`.
+- Return the JWT token in the response.
+
+### Step 5: Protect Posts Routes
+- Create an `auth.guard.ts` file in a guards folder:
+  - Use `@nestjs/passport` to implement JWT-based authentication.
+  - Validate the token and attach the user to the request object.
+- Protect all posts routes by applying the guard:
+  - Use `@UseGuards(AuthGuard('jwt'))` at the controller level.
+- Test accessing posts routes with and without a token.
+
+## Testing Instructions
+Test the following scenarios in Postman:
+- Register a new user (POST /users).
+- Log in with the user (POST /users/login) to get a token.
+- Access protected posts routes with and without the token.
+
+## Hints
+- Use environment variables for the JWT secret (`JWT_SECRET`) and MongoDB URI (`MONGO_URI`).
+- Refer to NestJS documentation for additional help on modules, controllers, and guards.
