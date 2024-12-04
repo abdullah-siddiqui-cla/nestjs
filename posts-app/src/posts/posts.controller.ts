@@ -1,7 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { PostsService } from './posts.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('posts')
+@UseGuards(JwtAuthGuard) // Protect all routes in this controller
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
   
